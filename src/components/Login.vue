@@ -46,7 +46,8 @@ export default {
                 this.checkLogin();
             })
             .catch(err => {
-                console.log(err.response);
+                // console.log(err.response);
+                alert('登入失敗，請確認帳號密碼是否正確。');
             })
         },
         checkLogin() {
@@ -55,11 +56,13 @@ export default {
 
             axios.post(`https://vue3-course-api.hexschool.io/v2/api/user/check`)
             .then(res => {
-                console.log(res.data);
+                // console.log(res.data);
+                alert('登入成功');
                 location.href = "./";
             })
             .catch(err => {
-                console.log(err.response);
+                alert('登入失敗，請確認帳號密碼是否正確。');
+                // console.log(err.response);
             })
         }
     },
