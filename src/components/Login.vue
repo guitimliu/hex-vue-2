@@ -27,6 +27,9 @@
 export default {
     data() {
         return {
+            api: {
+                url: 'https://vue3-course-api.hexschool.io/v2/',
+            },
             user: {
                 username: '',
                 password: '',
@@ -36,7 +39,7 @@ export default {
     methods: {
         sendLogin() {
             // console.log(this.user);
-            axios.post(`https://vue3-course-api.hexschool.io/v2/admin/signin`, this.user)
+            axios.post(`${this.api.url}admin/signin`, this.user)
             .then(res => {
                 console.log(res.data);
                 const {token, expired} = res.data;
@@ -54,7 +57,7 @@ export default {
             const tokenAuthorization = document.cookie.replace(/(?:(?:^|.*;\s*)vueLogin\s*\=\s*([^;]*).*$)|^.*$/, "$1");
             axios.defaults.headers.common['Authorization'] = tokenAuthorization;
 
-            axios.post(`https://vue3-course-api.hexschool.io/v2/api/user/check`)
+            axios.post(`${this.api.url}api/user/check`)
             .then(res => {
                 // console.log(res.data);
                 alert('登入成功');

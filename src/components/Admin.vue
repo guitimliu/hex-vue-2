@@ -91,6 +91,10 @@
 export default {
   data() {
     return {
+      api: {
+        url: 'https://vue3-course-api.hexschool.io/v2/',
+        path: 'guitimliu',
+      },
       ifLogin: true,
       products: [],
       temp: {},
@@ -98,7 +102,7 @@ export default {
   },
   methods: {
     getProducts() {
-      axios.get(`https://vue3-course-api.hexschool.io/v2/api/guitimliu/admin/products`)
+      axios.get(`${this.api.url}api/${this.api.path}/admin/products`)
         .then(res => {
           this.products = res.data.products;
         })
