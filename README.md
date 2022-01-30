@@ -17,11 +17,4 @@
 * 使用 npm 建立 Vite 專案
 * 運用元件化概念建立一個應該不算標準的 Vite 專案架構
 * 如果有些寫法沒有到一個標準（Ex. v-for 沒有搭配 :key），會不讓通過
-
-# Vue 3 + Vite
-
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
-
-## Recommended IDE Setup
-
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
+* 最後因為打包部分不熟悉，所以決定暫時棄用 Vite
