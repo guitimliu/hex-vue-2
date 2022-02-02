@@ -34,58 +34,9 @@
         </div>
     </div>
     
-    <script src="https://unpkg.com/vue@next"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script type="module">
-        const app = {
-            data() {
-                return {
-                    api: {
-                        url: 'https://vue3-course-api.hexschool.io/v2/',
-                    },
-                    user: {
-                        username: '',
-                        password: '',
-                    }
-                }
-            },
-            methods: {
-                sendLogin() {
-                    // console.log(this.user);
-                    axios.post(`${this.api.url}admin/signin`, this.user)
-                    .then(res => {
-                        console.log(res.data);
-                        const {token, expired} = res.data;
-                        document.cookie = `vueLogin=${token}; expired=${new Date(expired)}`;
-
-                        // 驗證是否登入
-                        this.checkLogin();
-                    })
-                    .catch(err => {
-                        // console.log(err.response);
-                        alert('登入失敗，請確認帳號密碼是否正確。');
-                    })
-                },
-                checkLogin() {
-                    const tokenAuthorization = document.cookie.replace(/(?:(?:^|.*;\s*)vueLogin\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-                    axios.defaults.headers.common['Authorization'] = tokenAuthorization;
-
-                    axios.post(`${this.api.url}api/user/check`)
-                    .then(res => {
-                        // console.log(res.data);
-                        alert('登入成功');
-                        location.href = "./";
-                    })
-                    .catch(err => {
-                        alert('登入失敗，請確認帳號密碼是否正確。');
-                        // console.log(err.response);
-                    })
-                }
-            }
-        }
-        Vue.createApp(app).mount('#app');
-    </script>
+    <script type="module" src="./script/login.js"></script>
 </body>
 </html>
