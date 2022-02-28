@@ -11,6 +11,7 @@ const app = {
         products: [],
         temp: 0,
         setOriginPrice: false,
+        is_edit: 0,
       }
     },
     methods: {
@@ -39,32 +40,93 @@ const app = {
       },
       showDetail(item) {
         this.temp = {...item};
+        Object.keys(this.temp).length ? this.is_edit = 1 : this.is_edit = 0;
+        this.isSpecialOffer();
       },
-      editProduct(item) {
-        
-      },
-      addProduct() {
-        axios.post(`${this.api.url}api/${this.api.path}/admin/product`, {
+      editProduct(temp) {
+        this.setOriginPrice ? '' : this.temp.origin_price = this.temp.price;
+        axios.put(`${this.api.url}api/${this.api.path}/admin/product/${temp.id}`, {
           "data": {
-            "title": 'title',
-            "category": "分類",
-            "origin_price": '500',
-            "price": '200',
+            "title": this.temp.title,
+            "category": this.temp.category,
+            "origin_price": parseFloat(this.temp.origin_price),
+            "price": parseFloat(this.temp.price),
             "unit": "個",
-            "description": "papaya",
-            "content": "這是內容",
-            "is_enabled": 1,
-            "imageUrl": "https://www.filepicker.io/api/file/hAiaQlWeT3yuLGHENBKS",
-            "imagesUrl": [
-              "https://www.filepicker.io/api/file/hAiaQlWeT3yuLGHENBKS",
-            ]
+            "description": this.temp.description,
+            "content": this.temp.content,
+            "is_enabled": this.temp.is_enabled,
+            "imageUrl": this.temp.imageUrl,
+            // "imageUrl": "https://www.filepicker.io/api/file/hAiaQlWeT3yuLGHENBKS",
+            "imagesUrl": this.temp.imagesUrl,
           }
         })
           .then((res) => {
-            console.log(res);
+            alert('已成功編輯商品');
+            this.getProducts();
           })
           .catch((err) => {
-            console.log(err);
+            console.log(err.response);
+          })
+      },
+      isSpecialOffer() {
+        this.setOriginPrice = this.temp.price !== this.temp.origin_price;
+      },
+      addProduct() {
+        this.setOriginPrice ? '' : this.temp.origin_price = this.temp.price;
+        
+        axios.post(`${this.api.url}api/${this.api.path}/admin/product`, {
+          "data": {
+            "title": this.temp.title,
+            "category": this.temp.category,
+            "origin_price": parseFloat(this.temp.origin_price),
+            "price": parseFloat(this.temp.price),
+            "unit": "個",
+            "description": this.temp.description,
+            "content": this.temp.content,
+            "is_enabled": this.temp.is_enabled,
+            "imageUrl": this.temp.imageUrl,
+            // "imageUrl": "https://www.filepicker.io/api/file/hAiaQlWeT3yuLGHENBKS",
+            "imagesUrl": this.temp.imagesUrl,
+          }
+        })
+          .then((res) => {
+            alert('已成功新增商品');
+            console.log(`${this.api.url}api/${this.api.path}/admin/product`);
+            this.getProducts();
+          })
+          .catch((err) => {
+            console.log(err.response);
+          })
+      },
+      uploadImage() {
+        const imagesUrl = document.querySelector('#productImages');
+        const data = imagesUrl.files;
+
+        const formData = new FormData();
+        formData.append('file-to-upload', data[0])
+
+        console.log(formData);
+
+        axios.post(`${this.api.url}api/${this.api.path}/admin/upload/`, formData)
+          .then((res) => {
+            console.log(res.data.imageUrl);
+            this.temp.imageUrl = res.data.imageUrl;
+            this.temp.imagesUrl ? '' : this.temp.imagesUrl = [];
+            this.temp.imagesUrl.push(this.temp.imageUrl);
+          })
+          .catch((err) => {
+            console.log(err.response);
+          })
+      },
+      deleteProduct(item) {
+        // console.log(item.id);
+        axios.delete(`${this.api.url}api/${this.api.path}/admin/product/${item.id}`)
+          .then((res) => {
+            alert('已成功刪除商品');
+            this.getProducts();
+          })
+          .catch((err) => {
+            console.log(err.response);
           })
       },
     },
