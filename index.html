@@ -114,12 +114,14 @@
                                 <li class="py-1">
                                     <label for="productImages">圖片</label>
                                     <input type="file" id="productImages" class="productImages" @change="uploadImage">
-                                    <template v-for="img in temp.imagesUrl">
-                                        <img :src="img" alt="圖片">
-                                    </template>
+                                    <div class="py-3">
+                                        <template v-for="img in temp.imagesUrl">
+                                            <img :src="img" alt="圖片" class="w-100">
+                                        </template>
+                                    </div>
                                 </li>
                                 <li class="text-end py-3">
-                                    <button type="button" class="btn btn-secondary rounded-2 w-25">重設</button>
+                                    <!-- <button type="button" class="btn btn-secondary rounded-2 w-25">重設</button> -->
                                     <button v-if="is_edit" @click="editProduct(temp)" data-bs-dismiss="modal" type="button" class="btn btn-success rounded-2 w-25 ms-2">送出</button>
                                     <button v-else @click="addProduct" data-bs-dismiss="modal" type="button" class="btn btn-success rounded-2 w-25 ms-2">新增</button>
                                 </li>
