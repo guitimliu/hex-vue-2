@@ -120,8 +120,8 @@
                                 </li>
                                 <li class="text-end py-3">
                                     <button type="button" class="btn btn-secondary rounded-2 w-25">重設</button>
-                                    <button v-if="is_edit" @click="editProduct(temp)" type="button" class="btn btn-success rounded-2 w-25 ms-2">送出</button>
-                                    <button v-else @click="addProduct" type="button" class="btn btn-success rounded-2 w-25 ms-2">新增</button>
+                                    <button v-if="is_edit" @click="editProduct(temp)" data-bs-dismiss="modal" type="button" class="btn btn-success rounded-2 w-25 ms-2">送出</button>
+                                    <button v-else @click="addProduct" data-bs-dismiss="modal" type="button" class="btn btn-success rounded-2 w-25 ms-2">新增</button>
                                 </li>
                                 <!-- <li class="py-1"> -->
                                     <!-- 商品照片輪播 -->
