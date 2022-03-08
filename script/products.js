@@ -1,4 +1,5 @@
 import { createApp } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.29/vue.esm-browser.min.js';
+import pagination from './components/pagination.js';
 
 const app = {
     data() {
@@ -12,7 +13,11 @@ const app = {
         temp: 0,
         setOriginPrice: false,
         is_edit: 0,
+        pagination: {},
       }
+    },
+    components: {
+      pagination
     },
     methods: {
       checkLogin() {
@@ -29,10 +34,12 @@ const app = {
               location.href = "./login.html";
           })
       },
-      getProducts() {
-        axios.get(`${this.api.url}api/${this.api.path}/admin/products`)
+      getProducts(page = 1) {
+        axios.get(`${this.api.url}api/${this.api.path}/admin/products?page=${page}`)
           .then(res => {
+            console.log(res);
             this.products = res.data.products;
+            this.pagination = res.data.pagination;
           })
           .catch(err => {
             // console.log(err.response);
@@ -129,6 +136,10 @@ const app = {
             console.log(err.response);
           })
       },
+      getPage(page) {
+        console.log('test');
+        console.log(page);
+      }
     },
     mounted() {
       this.checkLogin();

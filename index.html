@@ -13,7 +13,7 @@
     <div id="app">
         <div class="container my-3" v-if="ifLogin">
             <div class="d-flex justify-content-between mb-2">
-                <p data-aos="fade-right">共有 {{ products.length }} 項商品</p>
+                <!-- <p data-aos="fade-right">共有 {{ products.length }} 項商品</p> -->
                 <button type="button" v-on:click="showDetail()" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#productDetail">
                     新增商品
                 </button>
@@ -47,13 +47,15 @@
                 </tr>
             </tbody>
             </table>
+            <pagination :data="pagination" @return-page="getProducts"></pagination>
         
             <!-- 商品細項 Modal -->
             <div class="modal fade" id="productDetail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content bg-dark">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">編輯商品</h5>
+                            <h5 v-if="is_edit" class="modal-title" id="exampleModalLabel">編輯商品</h5>
+                            <h5 v-else class="modal-title" id="exampleModalLabel">新增商品</h5>
                             <!-- <span class="bg-secondary text-white rounded-2 p-1 ms-2">{{ temp.category }}</span> -->
                             <div class="ms-2">
                                 <button v-if="temp.is_enabled" @click="temp.is_enabled = !temp.is_enabled" class="btn btn-success">啟用</button>
