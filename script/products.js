@@ -1,5 +1,6 @@
 import { createApp } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.29/vue.esm-browser.min.js';
 import pagination from './components/pagination.js';
+import updateProduct from './components/update-product.js';
 
 const app = {
     data() {
@@ -17,7 +18,8 @@ const app = {
       }
     },
     components: {
-      pagination
+      pagination,
+      updateProduct,
     },
     methods: {
       checkLogin() {
@@ -136,10 +138,6 @@ const app = {
             console.log(err.response);
           })
       },
-      getPage(page) {
-        console.log('test');
-        console.log(page);
-      }
     },
     mounted() {
       this.checkLogin();
