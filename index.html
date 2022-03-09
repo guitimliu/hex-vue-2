@@ -42,7 +42,8 @@
                     <button type="button" v-on:click="showDetail(item)" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#productDetail">
                         編輯商品
                     </button>
-                    <button type="button" @click="deleteProduct(item)" class="btn btn-danger ms-2">刪除商品</button>
+                    <!-- <button type="button" @click="deleteProduct(item)" class="btn btn-danger ms-2">刪除商品</button> -->
+                    <button type="button" class="btn btn-danger ms-2" @click="temp = {...item}" data-bs-toggle="modal" data-bs-target="#deleteModal">刪除商品</button>
                 </td>
                 </tr>
             </tbody>
@@ -54,6 +55,10 @@
             <!-- Modal -->
             <update-product v-if="is_edit" :data="temp" :is_edit="is_edit" @return-data="editProduct"></update-product>
             <update-product v-else :data="temp" :is_edit="is_edit" @return-data="addProduct"></update-product>
+
+            <!-- Delete Modal -->
+            <delete-product :data="temp" @confirm-delete="deleteProduct"></delete-product>
+
       </div>
     </div>
 

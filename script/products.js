@@ -1,6 +1,7 @@
 import { createApp } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.29/vue.esm-browser.min.js';
 import pagination from './components/pagination.js';
 import updateProduct from './components/update-product.js';
+import deleteProduct from './components/delete-project.js';
 
 const app = {
     data() {
@@ -11,8 +12,7 @@ const app = {
         },
         ifLogin: true,
         products: [],
-        temp: 0,
-        setOriginPrice: false,
+        temp: {},
         is_edit: 0,
         pagination: {},
       }
@@ -20,6 +20,7 @@ const app = {
     components: {
       pagination,
       updateProduct,
+      deleteProduct,
     },
     methods: {
       checkLogin() {
@@ -28,24 +29,19 @@ const app = {
 
           axios.post(`https://vue3-course-api.hexschool.io/v2/api/user/check`)
           .then(res => {
-              // console.log(res.data);
               this.getProducts();
           })
           .catch(err => {
-              // console.log(err.response);
               location.href = "./login.html";
           })
       },
       getProducts(page = 1) {
         axios.get(`${this.api.url}api/${this.api.path}/admin/products?page=${page}`)
           .then(res => {
-            console.log(res);
             this.products = res.data.products;
             this.pagination = res.data.pagination;
           })
-          .catch(err => {
-            // console.log(err.response);
-          })
+          .catch(() => { /* error */ })
       },
       showDetail(item) {
         this.temp = {...item};
@@ -65,7 +61,6 @@ const app = {
             "content": this.temp.content,
             "is_enabled": this.temp.is_enabled,
             "imageUrl": this.temp.imageUrl,
-            // "imageUrl": "https://www.filepicker.io/api/file/hAiaQlWeT3yuLGHENBKS",
             "imagesUrl": this.temp.imagesUrl,
           }
         })
@@ -73,8 +68,8 @@ const app = {
             alert('已成功編輯商品');
             this.getProducts();
           })
-          .catch((err) => {
-            console.log(err.response);
+          .catch(() => {
+            alert('新增商品失敗，請確認資料是否填妥')
           })
       },
       isSpecialOffer() {
@@ -94,49 +89,22 @@ const app = {
             "content": this.temp.content,
             "is_enabled": this.temp.is_enabled,
             "imageUrl": this.temp.imageUrl,
-            // "imageUrl": "https://www.filepicker.io/api/file/hAiaQlWeT3yuLGHENBKS",
             "imagesUrl": this.temp.imagesUrl,
           }
         })
-          .then((res) => {
+          .then(() => {
             alert('已成功新增商品');
-            console.log(`${this.api.url}api/${this.api.path}/admin/product`);
             this.getProducts();
           })
-          .catch((err) => {
-            console.log(err.response);
-          })
-      },
-      uploadImage() {
-        const imagesUrl = document.querySelector('#productImages');
-        const data = imagesUrl.files;
-
-        const formData = new FormData();
-        formData.append('file-to-upload', data[0])
-
-        console.log(formData);
-
-        axios.post(`${this.api.url}api/${this.api.path}/admin/upload/`, formData)
-          .then((res) => {
-            console.log(res.data.imageUrl);
-            this.temp.imageUrl = res.data.imageUrl;
-            this.temp.imagesUrl ? '' : this.temp.imagesUrl = [];
-            this.temp.imagesUrl.push(this.temp.imageUrl);
-          })
-          .catch((err) => {
-            console.log(err.response);
-          })
+          .catch(() => { /* error */ })
       },
       deleteProduct(item) {
-        // console.log(item.id);
         axios.delete(`${this.api.url}api/${this.api.path}/admin/product/${item.id}`)
-          .then((res) => {
+          .then(() => {
             alert('已成功刪除商品');
             this.getProducts();
           })
-          .catch((err) => {
-            console.log(err.response);
-          })
+          .catch(() => { /* error */ })
       },
     },
     mounted() {

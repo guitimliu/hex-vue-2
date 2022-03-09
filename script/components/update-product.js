@@ -1,8 +1,29 @@
 export default {
+    data() {
+        return {
+            setOriginPrice: false,
+        }
+    },
     methods: {
         returnData() {
             this.$emit('return-data', this.data);
-        }
+        },
+        uploadImage() {
+            const imagesUrl = document.querySelector('#productImages');
+            console.log(imagesUrl);
+            const imgData = imagesUrl.files;
+    
+            const formData = new FormData();
+            formData.append('file-to-upload', imgData[0])
+    
+            axios.post(`${this.api.url}api/${this.api.path}/admin/upload/`, formData)
+                .then((res) => {
+                    this.temp.imageUrl = res.imgData.imageUrl;
+                    this.temp.imagesUrl ? '' : this.temp.imagesUrl = [];
+                    this.temp.imagesUrl.push(this.temp.imageUrl);
+                })
+                .catch(() => { /* error */ })
+        },
     },
     props: ['data', 'is_edit'],
     template: `
@@ -48,10 +69,11 @@ export default {
                                 <label for="productPrice" class="form-label">
                                     商品價格
                                 </label>
-                                <input type="number" class="form-control" id="productPrice" v-model="data.price">
+                                <input type="number" min="0" class="form-control" id="productPrice" v-model="data.price">
                             </li>
                             <li class="py-1">
                                 <div class="py-1">
+                                    {{ setOriginPrice }}
                                     <input type="checkbox" class="form-check-input" id="setOriginPrice" v-model="setOriginPrice">
                                     <label for="setOriginPrice" class="form-check-label ms-1">
                                         此價格為特價，輸入商品原價
@@ -61,7 +83,7 @@ export default {
                                     <label for="productOriginPrice" class="form-label">
                                         商品原價
                                     </label>
-                                    <input type="number" class="form-control" id="productOriginPrice" v-model="data.origin_price">
+                                    <input type="number" min="0" class="form-control" id="productOriginPrice" v-model="data.origin_price">
                                 </div>
                             </li>
                             <li v-if="data.price" class="py-1">
@@ -71,7 +93,7 @@ export default {
                                 <label for="productImages">圖片</label>
                                 <input type="file" id="productImages" class="productImages" @change="uploadImage">
                                 <div class="py-3">
-                                    <datalate v-for="img in data.imagesUrl">
+                                    <datalate v-for="(img,key) in data.imagesUrl" :key="key">
                                         <img :src="img" alt="圖片" class="w-100">
                                     </datalate>
                                 </div>
